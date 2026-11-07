@@ -12,12 +12,12 @@ def test_login_page_is_visible(page: Page, login_page: LoginPage) -> None:
     expect(login_page.login_button).to_be_visible()
 
 
-def test_login_with_valid_credentials(page: Page, login_page: LoginPage) -> None:
+def test_login_with_valid_credentials(page: Page, login_page: LoginPage, base_url: str) -> None:
     page.goto("/")
 
     login_page.login(STANDARD_USER["username"], STANDARD_USER["password"])
 
-    expect(page).to_have_url("https://www.saucedemo.com/inventory.html")
+    expect(page).to_have_url(f"{base_url}/inventory.html")
     expect(page.locator('[data-test="title"]')).to_have_text("Products")
 
 @pytest.mark.parametrize("user, expected_error", 
