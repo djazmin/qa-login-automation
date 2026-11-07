@@ -20,3 +20,7 @@ reports/
 
 # VS code 
 .vscode/
+
+# Playwright artifacts
+blob-report/
+.playwright/
