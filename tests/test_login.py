@@ -19,7 +19,7 @@ def test_login_with_valid_credentials(page: Page, login_page: LoginPage, invento
     login_page.login(STANDARD_USER["username"], STANDARD_USER["password"])
 
     expect(page).to_have_url(f"{base_url}/inventory.html")
-    expect(inventory_page.title).to_have_text("Products")
+    expect(inventory_page.title).to_have_text("Products123")
 
 @pytest.mark.parametrize("user, expected_error", 
                          [(INVALID_USER, "Epic sadface: Username and password do not match any user in this service"),
