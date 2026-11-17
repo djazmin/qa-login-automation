@@ -2,7 +2,7 @@ import pytest
 from playwright.sync_api import Page, expect
 from pages.inventory_page import InventoryPage
 from pages.login_page import LoginPage
-from test_data.users import STANDARD_USER, INVALID_USER, LOCKED_USER
+from test_data.users import STANDARD_USER, INVALID_USER, LOCKED_USER, EMPTY_USER, EMPTY_PASSWORD, NON_EXISTENT_USER
 
 
 def test_login_page_is_visible(login_page: LoginPage) -> None:
@@ -22,16 +22,22 @@ def test_login_with_valid_credentials(page: Page, login_page: LoginPage, invento
     expect(inventory_page.title).to_have_text("Products")
 
 @pytest.mark.parametrize("user, expected_error", 
-                         [(INVALID_USER,
-                        "Epic sadface: Username and password do not match any user in this service"),
-                        (LOCKED_USER,
-                        "Epic sadface: Sorry, this user has been locked out.")],
-                        ids=["invalid_user", "locked_user"])
-def test_login_with_invalid_credentials(login_page: LoginPage, user: dict, expected_error: str) -> None:
+                         [(INVALID_USER, "Epic sadface: Username and password do not match any user in this service"),
+                        (LOCKED_USER, "Epic sadface: Sorry, this user has been locked out."),
+                        (EMPTY_USER, "Epic sadface: Username is required"),
+                        (EMPTY_PASSWORD, "Epic sadface: Password is required"),
+                        (NON_EXISTENT_USER, "Epic sadface: Username and password do not match any user in this service")],
+                        ids=["invalid_user", 
+                             "locked_user", 
+                             "empty_username", 
+                             "empty_password", 
+                             "non_existent_user"])
+def test_login_is_rejected(page: Page, login_page: LoginPage, user: dict, expected_error: str, base_url: str) -> None:
     login_page.open()
 
     login_page.login(user["username"], user["password"])
 
     expect(login_page.error_message).to_be_visible()
     expect(login_page.error_message).to_have_text(expected_error)
+    expect(page).to_have_url(f"{base_url}/")
  
