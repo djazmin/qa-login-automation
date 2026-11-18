@@ -10,7 +10,7 @@ This project demonstrates the fundamentals of web UI test automation, including 
 
 ## Test Scenarios
 
-The suite runs 7 test cases in Chromium:
+The suite runs 8 test cases in Chromium:
 
 - **Login page visibility:** Verifies that the username field, password field, and login button are visible.
 - **Successful login:** Verifies that valid credentials navigate to the inventory page and display the "Products" title.
@@ -19,6 +19,7 @@ The suite runs 7 test cases in Chromium:
   - a locked-out user
   - an empty username
   - an empty password
+  - an empty username and password
   - a username that does not exist
 
 ## Tech Stack
@@ -34,9 +35,10 @@ The suite runs 7 test cases in Chromium:
 - Python 3.12
 - Git
 - Visual Studio Code (recommended)
-- The following installation commands are for macOS
 
 ## Installation
+
+The following commands are for macOS.
 
 1. Clone the repository:
 
@@ -115,15 +117,13 @@ The GitHub Actions workflow in `.github/workflows/tests.yml` runs the suite on e
 
 ```text
 qa-login-automation/
-├── .github/
-│   └── workflows/
-│       └── tests.yml 
-│
 ├── .claude/
 │   └── skills/
 │       └── qa-code-review/
-│           └── SKILL.md
-│
+│           └── SKILL.md     # AI code review checklist
+├── .github/
+│   └── workflows/
+│       └── tests.yml        # CI pipeline
 ├── pages/                   # Page objects: locators and page interactions
 │   ├── inventory_page.py
 │   └── login_page.py
@@ -153,5 +153,5 @@ qa-login-automation/
 - Understand Playwright locators and assertions.
 - Practice positive and negative testing.
 - Integrate automated tests into a CI/CD pipeline.
-- Apply the Page Object Model and pytest fixtures
-- Use parametrization to cover multiple test scenarios
+- Apply the Page Object Model and pytest fixtures.
+- Use parametrization to cover multiple test scenarios.

@@ -1,11 +1,11 @@
 STANDARD_USER = {
-    "username":"standard_user",
-    "password":"secret_sauce"
+    "username": "standard_user",
+    "password": "secret_sauce"
 }
 
 INVALID_USER = {
-    "username":"standard_user",
-    "password":"12332"
+    "username": "standard_user",
+    "password": "12332"
 }
 
 LOCKED_USER = {
@@ -20,6 +20,11 @@ EMPTY_USER = {
 
 EMPTY_PASSWORD = {
     "username": "locked_out_user",
+    "password": ""
+}
+
+EMPTY_CREDENTIALS = {
+    "username": "",
     "password": ""
 }
 
