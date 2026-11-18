@@ -3,6 +3,7 @@ from playwright.sync_api import Page, expect
 from pages.inventory_page import InventoryPage
 from pages.login_page import LoginPage
 from test_data.users import (
+    User,
     STANDARD_USER,
     INVALID_USER,
     LOCKED_USER,
@@ -13,18 +14,21 @@ from test_data.users import (
 )
 
 
-def test_login_page_is_visible(login_page: LoginPage) -> None:
-    login_page.open()
+def test_login_page_is_visible(opened_login_page: LoginPage) -> None:
 
-    expect(login_page.username_input).to_be_visible()
-    expect(login_page.password_input).to_be_visible()
-    expect(login_page.login_button).to_be_visible()
+    expect(opened_login_page.username_input).to_be_visible()
+    expect(opened_login_page.password_input).to_be_visible()
+    expect(opened_login_page.login_button).to_be_visible()
 
 
-def test_login_with_valid_credentials(page: Page, login_page: LoginPage, inventory_page: InventoryPage, base_url: str) -> None:
-    login_page.open()
+def test_login_with_valid_credentials(
+        page: Page, 
+        opened_login_page: LoginPage, 
+        inventory_page: InventoryPage, 
+        base_url: str
+    ) -> None:
 
-    login_page.login(STANDARD_USER["username"], STANDARD_USER["password"])
+    opened_login_page.login(STANDARD_USER["username"], STANDARD_USER["password"])
 
     expect(page).to_have_url(f"{base_url}/inventory.html")
     expect(inventory_page.title).to_have_text("Products")
@@ -38,11 +42,15 @@ def test_login_with_valid_credentials(page: Page, login_page: LoginPage, invento
     pytest.param(EMPTY_CREDENTIALS, "Epic sadface: Username is required", id="empty_credentials"),
     pytest.param(NON_EXISTENT_USER, "Epic sadface: Username and password do not match any user in this service", id="non_existent_user"),
 ])
-def test_login_is_rejected(page: Page, login_page: LoginPage, user: dict, expected_error: str, base_url: str) -> None:
-    login_page.open()
+def test_login_is_rejected(
+    page: Page, 
+    opened_login_page: LoginPage, 
+    user: User, 
+    expected_error: str, 
+    base_url: str
+) -> None:
+    opened_login_page.login(user["username"], user["password"])
 
-    login_page.login(user["username"], user["password"])
-
-    expect(login_page.error_message).to_be_visible()
-    expect(login_page.error_message).to_have_text(expected_error)
+    expect(opened_login_page.error_message).to_be_visible()
+    expect(opened_login_page.error_message).to_have_text(expected_error)
     expect(page).to_have_url(f"{base_url}/")

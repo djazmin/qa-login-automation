@@ -12,3 +12,8 @@ def login_page(page: Page) -> LoginPage:
 @pytest.fixture
 def inventory_page(page: Page) -> InventoryPage:
     return InventoryPage(page)
+
+@pytest.fixture
+def opened_login_page(login_page: LoginPage) -> LoginPage:
+    login_page.open()
+    return login_page
